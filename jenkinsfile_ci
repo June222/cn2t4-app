@@ -90,7 +90,7 @@ pipeline {
                     env.IMAGE_TAG = "${shortCommit}"
                 }
                 sh '''
-                docker build -t $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG ./backend
+                docker buildx --platform=linux/amd64 -t $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPO:latest ./backend
                 '''
             }
         }
@@ -99,6 +99,7 @@ pipeline {
             steps {
                 sh '''
                 docker push $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG
+                docker push $ECR_REGISTRY/$ECR_REPO:latest
                 '''
             }
         }
