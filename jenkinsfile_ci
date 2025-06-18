@@ -88,7 +88,10 @@ pipeline {
                 script {
                     def shortCommit = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                     env.IMAGE_TAG = "${shortCommit}"
+                    // 저장 (현재 파이프라인에서)
+                    writeFile file: 'image_tag.txt', text: "${env.IMAGE_TAG}"
                 }
+                archiveArtifacts artifacts: 'image_tag.txt', fingerprint: true
                 sh '''
                 docker build --platform=linux/amd64 -t $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPO:latest ./backend
                 '''
