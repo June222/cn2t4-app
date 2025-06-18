@@ -89,3 +89,5 @@ git push
 git pull
 docker exec django_backend python manage.py migrate
 ```
+
+---
